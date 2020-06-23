@@ -15,13 +15,10 @@ public class Login extends HttpServlet {
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        Connection con = null;
+        Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            con = DriverManager.getConnection
-                    ("jdbc:mysql://localhost:3306/customer?autoReconnect=true&useSSL=false","root","madhu123");
-            PreparedStatement ps = con.prepareStatement
+            connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement
                     ("select * from info where email='" +email+ "' and password='"+password+"'");
             ResultSet rs = ps.executeQuery();
 
@@ -32,7 +29,7 @@ public class Login extends HttpServlet {
             }
             out.println("You successfully logged in...");
             out.println("You Name:"+rs.getString(1)+" your email: "+rs.getString(2));
-            con.close();
+            connection.close();
         }
         catch(Exception se) {
             se.printStackTrace();

@@ -19,13 +19,12 @@ public class Register extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        Connection con = DBConnection.getConnection();
+
+        PreparedStatement ps = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            Connection con = DriverManager.getConnection
-                    ("jdbc:mysql://localhost:3306/customer?autoReconnect=true&useSSL=false","root","madhu123");
-
-            PreparedStatement ps = con.prepareStatement(query);
+            assert con != null;
+            ps = con.prepareStatement(query);
             ps.setString(1,firstname);
             ps.setString(2, lastname);
             ps.setString(3, phonenumber);
@@ -39,9 +38,8 @@ public class Register extends HttpServlet {
                 response.sendRedirect("RegistrationLogin-JspServlet/web/login.jsp");
             }
             con.close();
-        }
-        catch(Exception se) {
-            se.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
