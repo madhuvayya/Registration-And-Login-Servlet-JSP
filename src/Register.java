@@ -1,3 +1,5 @@
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +14,6 @@ public class Register extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String query = new String("INSERT INTO info VALUES(?,?,?,?,?)");
-
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         String phonenumber = request.getParameter("phonenumber");
@@ -30,12 +31,17 @@ public class Register extends HttpServlet {
             ps.setString(3, phonenumber);
             ps.setString(4, email);
             ps.setString(5, password);
-            int i = ps.executeUpdate();
+            int i =0;
+            try {
+                i = ps.executeUpdate();
+            } catch (MySQLIntegrityConstraintViolationException e) {
+                request.setAttribute("message","Already registered just login");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
 
             if(i > 0) {
-                out.println("You are successfully registered");
-                out.println("Login");
-                response.sendRedirect("RegistrationLogin-JspServlet/web/login.jsp");
+                request.setAttribute("message","You are successfully registered login");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             con.close();
         } catch (SQLException e) {

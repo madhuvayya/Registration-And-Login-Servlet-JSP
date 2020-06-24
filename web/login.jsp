@@ -30,9 +30,10 @@
 <h2 align="center">Login</h2>
 <div class="form">
     <form method="post" action="login">
+        <div style="color: #FF0000;">${message}</div>
         <table>
             <tr>
-                <td>Name:</td>
+                <td>Email:</td>
                 <td><input type="text" name="email" placeholder="Email" required></td><br>
             </tr>
             <tr>

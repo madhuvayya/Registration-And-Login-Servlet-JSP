@@ -20,7 +20,7 @@
         display: inline-block;
         position: absolute;
         left: 50%;
-        top:28%;
+        top:30%;
         transform: translate(-50%, -50%);
     }
     </style>
